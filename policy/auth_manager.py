@@ -69,19 +69,3 @@ class AuthManager:
         PolicyLogger.info("Authentication Counter Reset")
 
 
-if __name__ == "__main__":
-
-    auth = AuthManager(
-        password="admin123",
-        max_attempts=3
-    )
-
-    print(auth.authenticate("abc"))
-    print(auth.authenticate("xyz"))
-    print(auth.authenticate("hello"))
-
-    print("Attempts Remaining:", auth.attempts_remaining())
-
-    print("Limit Reached:", auth.limit_reached())
-
-    print(auth.authenticate("admin123"))

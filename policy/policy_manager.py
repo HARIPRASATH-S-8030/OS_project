@@ -123,24 +123,3 @@ class PolicyEngine:
 
         self.sanitize()
 
-if __name__ == "__main__":
-
-    engine = PolicyEngine(
-        password="admin123",
-        expiry_time=15,
-        view_limit=2,max_failed_attempts=3
-    )
-
-    engine.open_file()
-
-    engine.authenticate("admin123")
-
-    print("\nViewing file...\n")
-
-    engine.view_file()
-
-    print("\nViewing file again...\n")
-
-    engine.view_file()
-
-    input("\nPress ENTER to exit...")

@@ -52,15 +52,3 @@ class TimerManager:
 
         return self.running
 
-if __name__ == "__main__":
-
-    def timer_expired():
-        print(">>> TIMER CALLBACK EXECUTED <<<")
-
-    timer = TimerManager()
-
-    timer.start(timer_expired, duration=5)
-
-    print("Waiting for timer...")
-
-    input("Press ENTER after timer expires...")
