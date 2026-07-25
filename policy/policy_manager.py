@@ -6,19 +6,33 @@ from timer_manager import TimerManager
 from view_manager import ViewManager
 
 from logger import PolicyLogger
+from config import (
+    DEFAULT_PASSWORD,
+    DEFAULT_EXPIRY_TIME,
+    DEFAULT_VIEW_LIMIT,
+    MAX_FAILED_ATTEMPTS
+)
 
 
 class PolicyEngine:
 
-    def __init__(self):
+    def __init__(
+    self,
+    password=DEFAULT_PASSWORD,
+    expiry_time=DEFAULT_EXPIRY_TIME,
+    view_limit=DEFAULT_VIEW_LIMIT,
+    max_failed_attempts=MAX_FAILED_ATTEMPTS
+    ):
 
         self.state = State.IDLE
 
-        self.auth = AuthManager()
+        self.expiry_time = expiry_time
+
+        self.auth = AuthManager(password=password, max_attempts=max_failed_attempts)
 
         self.timer = TimerManager()
 
-        self.view = ViewManager()
+        self.view = ViewManager(view_limit)
 
         PolicyLogger.info("Policy Engine Initialized")
 
@@ -46,7 +60,7 @@ class PolicyEngine:
 
             self.change_state(State.SECURE_RENDER)
 
-            self.timer.start(self.timer_expired, duration=10)
+            self.timer.start(self.timer_expired,duration=self.expiry_time)
 
         else:
 
@@ -111,13 +125,21 @@ class PolicyEngine:
 
 if __name__ == "__main__":
 
-    engine = PolicyEngine()
+    engine = PolicyEngine(
+        password="admin123",
+        expiry_time=15,
+        view_limit=2,max_failed_attempts=3
+    )
 
     engine.open_file()
 
     engine.authenticate("admin123")
 
     print("\nViewing file...\n")
+
+    engine.view_file()
+
+    print("\nViewing file again...\n")
 
     engine.view_file()
 
