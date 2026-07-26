@@ -7,14 +7,19 @@ Responsible for:
 3. Resetting Attempts
 """
 
-from config import MAX_FAILED_ATTEMPTS
+from config import DEFAULT_PASSWORD, MAX_FAILED_ATTEMPTS
 from logger import PolicyLogger
 
 
 class AuthManager:
 
-    def __init__(self, password="admin123"):
+    def __init__(
+        self,
+        password=DEFAULT_PASSWORD,
+        max_attempts=MAX_FAILED_ATTEMPTS
+    ):
         self.correct_password = password
+        self.max_attempts = max_attempts
         self.failed_attempts = 0
 
     def authenticate(self, entered_password):
@@ -35,7 +40,7 @@ class AuthManager:
 
         PolicyLogger.warning(
             f"Authentication Failed "
-            f"({self.failed_attempts}/{MAX_FAILED_ATTEMPTS})"
+            f"({self.failed_attempts}/{self.max_attempts})"
         )
 
         return False
@@ -45,14 +50,14 @@ class AuthManager:
         Returns remaining authentication attempts.
         """
 
-        return MAX_FAILED_ATTEMPTS - self.failed_attempts
+        return self.max_attempts - self.failed_attempts
 
     def limit_reached(self):
         """
         Returns True if failure limit reached.
         """
 
-        return self.failed_attempts >= MAX_FAILED_ATTEMPTS
+        return self.failed_attempts >= self.max_attempts
 
     def reset(self):
         """
@@ -63,16 +68,4 @@ class AuthManager:
 
         PolicyLogger.info("Authentication Counter Reset")
 
-if __name__ == "__main__":
 
-    auth = AuthManager()
-
-    print(auth.authenticate("abc"))
-    print(auth.authenticate("xyz"))
-    print(auth.authenticate("hello"))
-
-    print("Attempts Remaining:", auth.attempts_remaining())
-
-    print("Limit Reached:", auth.limit_reached())
-
-    print(auth.authenticate("admin123"))

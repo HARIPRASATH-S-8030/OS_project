@@ -3,6 +3,7 @@ Configuration file for Policy Engine
 """
 
 # Authentication Policy
+DEFAULT_PASSWORD = "admin123"
 MAX_FAILED_ATTEMPTS = 3
 
 # Time Policy (seconds)

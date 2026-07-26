@@ -40,14 +40,3 @@ class ViewManager:
 
         PolicyLogger.info("View Counter Reset")
 
-if __name__ == "__main__":
-
-    view = ViewManager()
-
-    print(view.limit_reached())
-
-    view.consume_view()
-
-    print(view.limit_reached())
-
-    view.reset()
