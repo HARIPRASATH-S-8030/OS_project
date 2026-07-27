@@ -21,6 +21,10 @@ class PolicyLogger:
         print("[WARNING]", message)
 
     @staticmethod
+    def error(message):
+        logging.error(message)
+
+    @staticmethod
     def critical(message):
         logging.critical(message)
         print("[CRITICAL]", message)
