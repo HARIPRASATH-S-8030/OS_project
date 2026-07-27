@@ -7,6 +7,7 @@ Policy Engine (Python) and Backend (C++).
 
 import subprocess
 import os
+import platform
 from logger import PolicyLogger
 
 
@@ -16,7 +17,10 @@ class BackendInterface:
         if loader_path is None:
             # Automatically find build/loader from the project root
             base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-            self.loader_path = os.path.join(base_dir, "build", "loader")
+            
+            # Cross-platform executable extension handling (.exe for Windows)
+            loader_filename = "loader.exe" if platform.system() == "Windows" else "loader"
+            self.loader_path = os.path.join(base_dir, "build", loader_filename)
         else:
             self.loader_path = loader_path
             
