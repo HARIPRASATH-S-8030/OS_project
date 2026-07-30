@@ -41,7 +41,7 @@ class HomeScreen(QWidget):
 
         # Open document button
         open_button = QPushButton(
-            "Open Secure Document"
+            "Open Document"
         )
 
 

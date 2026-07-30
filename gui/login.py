@@ -44,9 +44,8 @@ class LoginScreen(QWidget):
                     self.viewer_window.document.setText(file.read())
             else:
                 self.viewer_window.document.setText(
-                    "[TOP SECRET - IEEE DEMO]\n\n"
-                    "Project SecureOS Launch Codes: 9948-ABX-772\n"
-                    "If this text is found in a RAM dump after sanitization, the system has failed."
+                    "This file contains confidential information.\n" 
+                    "If you are not the intended recepient, kindly erase this file.\n"
                 )
                 
             self.viewer_window.show()
@@ -54,5 +53,22 @@ class LoginScreen(QWidget):
             # 3. Close the login screen
             self.close()
         else:
-            # Show error if authentication fails
-            QMessageBox.warning(self, "Access Denied", "Authentication Failed or Account Locked!")
+
+            if self.engine.state == State.TERMINATED:
+
+                QMessageBox.critical(
+                    self,
+                    "Access Blocked",
+                    "Exceeded number of attempts.\n"
+                    "You can no longer access this document."
+                )
+
+                self.close()
+
+            else:
+
+                QMessageBox.warning(
+                    self,
+                    "Access Denied",
+                    "Authentication Failed!"
+                )
