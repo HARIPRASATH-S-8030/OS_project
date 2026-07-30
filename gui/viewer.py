@@ -121,34 +121,25 @@ class Viewer(QWidget):
 
 
     def check_state(self):
-
         current_state = self.engine.state
+        print("Current State:", current_state)
 
-
-        print(
-            "Current State:",
-            current_state
-        )
-
-
-        if current_state == State.SANITIZING:
-
-
-            # Clear displayed sensitive data
+        # FIX: Trigger GUI wipe if state is SANITIZING *OR* TERMINATED
+        if current_state in [State.SANITIZING, State.TERMINATED]:
+            
+            # 1. Instantly clear the text
             self.document.clear()
-
-
-            # Stop timer
+            
+            # 2. Stop the polling timer
             self.timer.stop()
-
-
+            
+            # 3. Show the alert
             QMessageBox.warning(
                 self,
                 "Security Alert",
                 "Session expired or policy violated.\n"
                 "Secure memory wiped."
             )
-
-
-            # Close viewer
+            
+            # 4. Close the viewer window
             self.close()

@@ -71,4 +71,4 @@ Testing/
 .cache/
 
 __pycache__/
-*.pyc
+*.pycgui/venv/
